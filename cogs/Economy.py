@@ -16,14 +16,15 @@ class Economy(commands.Cog):
   #BALANCE COMMAND
   @commands.command(aliases=["bal"])
   async def balance(self, ctx, member: discord.Member=None):
+    
     with open("cogs/eco.json", "r") as f:
       user_eco = json.load(f)
-
     if member is None:
       member = ctx.author
     elif member is not None:
       member = member
 
+    #check if member has account, if not make one for them
     if str(member.id) not in user_eco:
       user_eco[str(member.id)] = {}
       user_eco[str(member.id)]["Wallet"] = 50
@@ -31,6 +32,7 @@ class Economy(commands.Cog):
       with open("cogs/eco.json", "w") as f:
         json.dump(user_eco, f, indent=4)
 
+    #Outputing balance
     eco_embed = discord.Embed(title=f"{member.name}'s Current Balance", color = discord.Color.blue())
     eco_embed.add_field(name="Wallet:", value=f"{user_eco[str(member.id)]['Wallet']} coins")
     eco_embed.add_field(name="Bank:", value=f"{user_eco[str(member.id)]['Bank']} coins")
@@ -44,7 +46,8 @@ class Economy(commands.Cog):
   async def beg(self, ctx):
     with open("cogs/eco.json", "r") as f:
       user_eco = json.load(f)
-
+      
+    #check if member has account, if not make one for them
     if str(ctx.author.id) not in user_eco:
       user_eco[str(ctx.author.id)] = {}
       user_eco[str(ctx.author.id)]["Wallet"] = 50
@@ -52,7 +55,8 @@ class Economy(commands.Cog):
 
       with open("cogs/eco.json", "w") as f:
         json.dump(user_eco, f, indent=4)
-        
+
+    #Random amount that can be earned or lost
     amount = random.randint(-9,30)
 
     if amount == -9 or amount == -8 or amount == -7 or amount == -6 or amount == -5:
@@ -97,7 +101,7 @@ class Economy(commands.Cog):
     with open("cogs/eco.json", "r") as f:
       user_eco=json.load(f)
 
-  
+    #check if member has account, if not make one for them
     if str(ctx.author.id) not in user_eco:       
       user_eco[str(ctx.author.id)] = {}
     
@@ -107,10 +111,10 @@ class Economy(commands.Cog):
       with open("cogs/eco.json", "w") as f: 
         json.dump(user_eco, f, indent=4)
 
-    
+    #randomize amount user earns
     amount=random.randint(100, 308) 
     user_eco[str(ctx.author.id)]["Wallet"] += amount
-    
+
     eco_embed = discord.Embed(title=f"Great Work!", color = discord.Color.blue())
     eco_embed.add_field(name="You've Earned:", value=f"{amount} coins")
     await ctx.send(embed=eco_embed)
@@ -122,6 +126,7 @@ class Economy(commands.Cog):
     with open("cogs/eco.json", "r") as f:
       user_eco=json.load(f)
 
+    #check if member has account, if not make one for them
     if str(ctx.author.id) not in user_eco:       
       user_eco[str(ctx.author.id)] = {}
     
@@ -130,7 +135,8 @@ class Economy(commands.Cog):
     
       with open("cogs/eco.json", "w") as f: 
         json.dump(user_eco, f, indent=4)
-        
+
+    #check if user inputs valid amount
     if amount > user_eco[str(ctx.author.id)]["Wallet"]:
       await ctx.send("You're not that rich!")
     elif amount<0:
@@ -151,6 +157,7 @@ class Economy(commands.Cog):
     with open("cogs/eco.json", "r") as f:
       user_eco=json.load(f)
 
+    #check if member has account, if not make one for them
     if str(ctx.author.id) not in user_eco:       
       user_eco[str(ctx.author.id)] = {}
     
@@ -159,7 +166,8 @@ class Economy(commands.Cog):
     
       with open("cogs/eco.json", "w") as f: 
         json.dump(user_eco, f, indent=4)
-        
+
+    #check if user inputs valid amount
     if amount > user_eco[str(ctx.author.id)]["Bank"]:
       await ctx.send("You're not that rich!")
     elif amount<0:
