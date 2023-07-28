@@ -7,6 +7,7 @@ import asyncio
 class TriviaGame(commands.Cog):
     def __init__(self, client):
         self.client = client
+        #questions
         self.questions = [
             {
                 "question": "What is the capital of France?",
@@ -105,19 +106,24 @@ class TriviaGame(commands.Cog):
         question_text = question["question"]
         options = question["options"]
 
+        #randomiing questions
         random.shuffle(options)
 
+        #embedding question
         trivia_embed = discord.Embed(
             title='Trivia Game',
             description=question_text,
             color=discord.Color.blurple()
         )
 
+        #adding options
         for idx, option in enumerate(options):
             trivia_embed.add_field(name=f'{idx + 1}.', value=option, inline=False)
 
+        #outputting question
         await ctx.send(embed=trivia_embed)
 
+        #checking users answer
         def check(msg):
             return msg.author == ctx.author and msg.content.isdigit() and 1 <= int(msg.content) <= len(options)
 
@@ -126,13 +132,15 @@ class TriviaGame(commands.Cog):
             response = await self.client.wait_for('message', timeout=15.0, check=check)
             user_choice = int(response.content) - 1
             correct_option = question["correct_option"]
-
+            
+            #win condition
             if user_choice == correct_option:
                 cor_em = discord.Embed(title='Correct!', description='You earned 5 coins.')
                 await ctx.send(embed=cor_em)
                 with open("cogs/eco.json", "r") as f:
                   user_eco = json.load(f)
-  
+
+                #check if member has account, if not make one for them
                 if str(ctx.author.id) not in user_eco:
                   user_eco[str(ctx.author.id)] = {}
                   user_eco[str(ctx.author.id)]["Wallet"] = 50
@@ -141,10 +149,12 @@ class TriviaGame(commands.Cog):
                 user_eco[str(ctx.author.id)]["Wallet"] += 5
                 with open("cogs/eco.json", "w") as f:
                     json.dump(user_eco, f, indent=4)
+            #lose condition
             else:
                 wrong_em = discord.Embed(title='Oops!', description="That's incorrect.")
                 await ctx.send(embed=wrong_em)
 
+        #time ran out
         except asyncio.TimeoutError:
             await ctx.send("Time's up! The trivia question expired.")
 
