@@ -31,17 +31,20 @@ class SnakeGame(commands.Cog):
     async def on_ready(self):
         print(f"{__name__} has loaded.")
 
+    #generate apple on board
     def generate_food(self):
         self.food = (random.randint(0, self.width - 1), random.randint(0, self.height - 1))
         while self.food in self.snake:
             self.food = (random.randint(0, self.width - 1), random.randint(0, self.height - 1))
 
+    #reset board
     def reset(self):
         self.snake = [(0, 0)]
         self.direction = RIGHT
         self.generate_food()
         self.message = None
 
+    #moving snake
     def move(self):
         head_x, head_y = self.snake[-1]
         if self.direction == UP:
@@ -64,6 +67,7 @@ class SnakeGame(commands.Cog):
             self.snake.pop(0)
             return True 
 
+    #get board
     def get_board(self):
         board = [[EMPTY for _ in range(self.width)] for _ in range(self.height)]
         for x, y in self.snake:
@@ -74,6 +78,7 @@ class SnakeGame(commands.Cog):
         board[food_y][food_x] = FOOD
         return board
 
+    #when reaction is added
     async def on_reaction_add(self, reaction, user):
         if user == self.client.user:
             return
@@ -81,11 +86,13 @@ class SnakeGame(commands.Cog):
         if self.running and reaction.message.id == self.message.id and user == self.author:
             await self.client.process_commands(reaction.message)
 
+    #edit board to put new position in
     async def update_board(self):
         board = self.get_board()
         board_str = "\n".join("".join(row) for row in board)
         await self.message.edit(content=board_str)
 
+    #show board
     async def display_board(self, ctx):
         board = self.get_board()
         board_str = "\n".join("".join(row) for row in board)
@@ -103,6 +110,7 @@ class SnakeGame(commands.Cog):
         with open("cogs/eco.json", "r") as f:
             user_eco = json.load(f)
 
+        #check if member has account, if not make one for them
         if str(ctx.author.id) not in user_eco:
             user_eco[str(ctx.author.id)] = {}
 
