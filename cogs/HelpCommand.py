@@ -12,6 +12,7 @@ class HelpCommand(commands.Cog):
 
   @commands.command()
   async def help(self,ctx, cat: str=None):
+    #check if category specified
     if cat == None:
       cat_em = discord.Embed(title="Help Command", color=discord.Color.blurple())
       cat_em.add_field(name='Economy', value='Do !help economy for a list of economy commands')
@@ -19,6 +20,8 @@ class HelpCommand(commands.Cog):
       cat_em.add_field(name='Games', value='Do !help games for a list of game commands')
       cat_em.add_field(name='Fish', value='Do !help fish for a list of fish commands')
       await ctx.send(embed=cat_em)
+
+    #output when economy cat is specified
     elif cat.lower() == 'economy':
       eco_embed = discord.Embed(title='Economy Commands List', color=discord.Color.blurple())
       
@@ -29,6 +32,8 @@ class HelpCommand(commands.Cog):
       eco_embed.add_field(name='Work', value='Earn coins once a day', inline=False)
   
       await ctx.send(embed=eco_embed)
+
+    #output when shop cat is specified
     elif cat.lower() == 'shop':
       store_embed = discord.Embed(title='Shop Commands List', color=discord.Color.blurple())
   
@@ -38,6 +43,8 @@ class HelpCommand(commands.Cog):
       store_embed.add_field(name='Sell [item]', value='Sell an item in your bag', inline=False)
   
       await ctx.send(embed=store_embed)
+
+    #output if games cat is specified
     elif cat.lower() == 'games':
       games_embed = discord.Embed(title='Games Commands List', color=discord.Color.blurple())
   
@@ -50,6 +57,8 @@ class HelpCommand(commands.Cog):
       games_embed.add_field(name='blackjack', value='Simplified game of blackjack // aliases: bj', inline=False)
       games_embed.set_footer(text=f"Requested by <@{ctx.author}>", icon_url=ctx.author.avatar)
       await ctx.send(embed=games_embed)
+
+    #output if fish cat is specified
     elif cat.lower() == "fish":
       fish_em = discord.Embed(title="Fish Commands List", color=discord.Color.blurple())
       fish_em.add_field(name="Fish", value="Catch a fish! or trash", inline=False)
