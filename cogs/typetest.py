@@ -36,20 +36,27 @@ class TypingTest(commands.Cog):
     "information", "interesting", "confidence", "achievement", "competition",
     "appreciation", "incredible", "unforgettable", "imagination", "photograph",
     "communication", "enthusiastic", "announcement", "astronomical", "outstanding"]
-      
+
+        #randomize test word
         test_word = random.choice(test_words)
+        #embedding word
         word_em = discord.Embed(title='Typing Test', description='Your word is:', color=discord.Color.blurple())
         word_em.add_field(name='', value=f'**{test_word}**')
         await ctx.send(embed=word_em)
 
         try:
+            #check if user typed word and if word is the same as test word
             def check(msg):
                 return msg.author == ctx.author and msg.content.lower() == test_word
 
+            #start timer
             start_time = time.time()
+            #check for message
             await ctx.bot.wait_for('message', timeout=10.0, check=check)
+            #once message found, end time
             end_time = time.time()
 
+            #find typing speed
             chars_per_second = len(test_word) / (end_time - start_time)
 
             average_word_length = 5
@@ -60,7 +67,8 @@ class TypingTest(commands.Cog):
             earned = round(typing_speed_wpm, 0)
             with open("cogs/eco.json", "r") as f:
               user_eco = json.load(f)
-  
+
+            #check if user has account, if not make account
             if str(ctx.author.id) not in user_eco:
               user_eco[str(ctx.author.id)] = {}
               user_eco[str(ctx.author.id)]["Wallet"] = 50
