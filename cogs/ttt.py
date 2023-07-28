@@ -17,20 +17,25 @@ class TicTacToe(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"{__name__} has loaded.")
-
+        
+    #display board
     async def display_board(self, ctx, board):
         await ctx.send("".join(board[i] + "\n" if i % 3 == 2 else board[i] for i in range(9)))
 
+    #randomize bots choice
     def get_bot_move(self, board):
         empty_spots = [i for i, spot in enumerate(board) if spot == EMPTY]
         return random.choice(empty_spots)
 
     @commands.command(aliases=['ttt'])
     async def tictactoe(self, ctx, opponent: str = "bot"):
+
+        #check if choice between bot and user is made
         if opponent.lower() not in ["bot", "user"]:
             await ctx.send("Invalid opponent choice. Please choose 'bot' or 'user'.")
             return
-
+            
+        #if choice is user opponent
         if opponent.lower() == "user":
             opp_em = discord.Embed(title='TicTacToe')
             opp_em.add_field(name='Please get opponent to tag himself/herself below', value='▼▼▼')
@@ -61,11 +66,12 @@ class TicTacToe(commands.Cog):
                 except asyncio.TimeoutError:
                     await ctx.send("Time's up. The game has ended.")
                     return
-
-            else:  # Bot's or user's turn
+            # Bot's or user's turn
+            else:  
                 if opponent == "bot":
                     move = self.get_bot_move(board)
                 else:
+                    #check if user chose tile inside board
                     def check_valid_move(message):
                         return message.author == opponent and message.content.isdigit() and int(message.content) - 1 in [i for i, spot in enumerate(board) if spot == EMPTY]
 
@@ -75,7 +81,7 @@ class TicTacToe(commands.Cog):
                     except asyncio.TimeoutError:
                         await ctx.send("Time's up. The game has ended.")
                         return
-
+                        
             if board[move] == EMPTY:
                 board[move] = current_player
                 winner = self.check_winner(board)
