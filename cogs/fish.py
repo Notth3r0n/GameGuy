@@ -18,6 +18,7 @@ class Fishing(commands.Cog):
             user_inven = json.load(f)
 
         bag = user_inven.get(str(ctx.author.id), {}).get("Bag", [])
+        #check if user has a fishing rod
         if (
             "common fishing rod" in bag
             or "uncommon fishing rod" in bag
@@ -26,6 +27,7 @@ class Fishing(commands.Cog):
             or "legendary fishing rod" in bag
             or "mythic fishing rod" in bag
         ):
+            #chances of catching fish for each fishing rod tier
             if "common fishing rod" in bag:
                 fish_names = ["Trash", "Trash", "Bass", "Trash", "Trash", "Salmon", "Trash", "Trash", "Trout", "Trash", "Trash", "Catfish", "Trash", "Tuna", "Trash"]
             elif "uncommon fishing rod" in bag:
