@@ -12,28 +12,31 @@ TOKEN = os.environ['TOKEN']
 intents = discord.Intents.all()
 intents.message_content = True
 
+#setup bot
 client = commands.Bot(command_prefix='!',
                       case_insensitive=True,
                       intents=intents)
 
 client.remove_command('help')
 
+#inform of bot online
 @client.event
 async def on_ready():
   print(f'{client.user} logged in!')
 
-
+#load cogs
 async def load():
   for filename in os.listdir("./cogs"):
     if filename.endswith(".py"):
       await client.load_extension(f"cogs.{filename[:-3]}")
 
-
+#run bot
 async def main():
   async with client:
     await load()
     await client.start(TOKEN)
 
+#Bot-owner-only-command
 @client.command()
 async def add(ctx, amount: int, member: discord.Member=None):
   if str(ctx.author.id) == "269372082456887296":
@@ -78,6 +81,7 @@ async def remove(ctx, amount: int, member: discord.Member=None):
     fail_em = discord.Embed(title='Error', description='You do not have access to this command!')
     await ctx.send(embed=fail_em)
     
-
+#run website
 keep_alive()
+#run main
 asyncio.run(main())
