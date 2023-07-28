@@ -18,16 +18,19 @@ class rps(commands.Cog):
         user_id = str(ctx.author.id)
         with open("cogs/eco.json", "r") as f:
           user_eco=json.load(f)
-
+        #check if choice is made
         if choice == '':
           await ctx.send("Please enter either 'rock', 'paper', or 'scissors'( !rps [choice] )")
+        #check if choice is valid
         if choice not in self.choices:
             await ctx.send("Invalid choice! Please choose either 'rock', 'paper', or 'scissors'.")
             return
-
+            
+        #randomizing bots choice
         bot_choice = random.choice(self.choices)
         result = self.get_result(choice, bot_choice)
-
+        
+        #win condition
         if result == 'win':
             win_em = discord.Embed(title='You Win!', description=f'You chose **{choice}**, and I chose **{bot_choice}**.')
             win_em.add_field(name='', value='5 coins have been added to your wallet')
@@ -35,6 +38,7 @@ class rps(commands.Cog):
             await ctx.send(embed=win_em)
             with open("cogs/eco.json", "w") as f: 
                 json.dump(user_eco, f, indent=4)
+        #lose condition
         elif result == 'lose':
             lose_em = discord.Embed(title='You Lose!', description=f'You chose **{choice}**, and I chose **{bot_choice}**.')
             lose_em.add_field(name='',value='1 coin has been deducted from your wallet')
@@ -42,10 +46,12 @@ class rps(commands.Cog):
             await ctx.send(embed=lose_em)
             with open("cogs/eco.json", "w") as f: 
                 json.dump(user_eco, f, indent=4)
+        #tie condition
         else:
             tie_em = discord.Embed(title='Tie!', description=f'You chose **{choice}**, and I chose **{bot_choice}**.')
             await ctx.send(embed=tie_em)
 
+    #getting result
     def get_result(self, user_choice, bot_choice):
         if user_choice == bot_choice:
             return 'tie'
