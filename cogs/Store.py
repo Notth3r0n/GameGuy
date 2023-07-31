@@ -75,12 +75,6 @@ class Store(commands.Cog):
         for i in elec_shop:
             name = i["name"].lower()
             price = i["price"]
-        for i in weapons_shop:
-            name1 = i["name"].lower()
-            price1 = i["price"]
-        for i in fish_shop:
-            name2 = i["name"].lower()
-            price2 = i["price"]
 
             if name == item:
                 with open("cogs/inven.json", "r") as f:
@@ -133,6 +127,10 @@ class Store(commands.Cog):
                     broke_em.add_field(name='You do not have enough coins', value="You're broke")
                     await ctx.send(embed=broke_em)
                 return
+                
+        for i in weapons_shop:
+            name1 = i["name"].lower()
+            price1 = i["price"]
 
             if name1 == item:
                 with open("cogs/inven.json", "r") as f:
@@ -185,7 +183,10 @@ class Store(commands.Cog):
                     broke_em.add_field(name='You do not have enough coins', value="You're broke")
                     await ctx.send(embed=broke_em)
                 return
-
+        for i in fish_shop:
+            name2 = i["name"].lower()
+            price2 = i["price"]
+            
             if name2 == item:
                 with open("cogs/inven.json", "r") as f:
                     user_inven = json.load(f)
