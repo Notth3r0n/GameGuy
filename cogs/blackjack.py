@@ -29,6 +29,7 @@ class BlackjackGame(commands.Cog):
     async def on_ready(self):
         print(f"{__name__} has loaded.")
 
+    #BLACKJACK COMMAND
     @commands.command(aliases=['bj'])
     async def blackjack(self, ctx, amount: int):
         with open("cogs/eco.json", "r") as f:
@@ -115,7 +116,7 @@ class BlackjackGame(commands.Cog):
           
             await ctx.send(embed=win_em)
           
-        else:
+        else: 
             lose_em = discord.Embed(title="Lost", description="Dealer wins!", color=discord.Color.red())
             lose_em.add_field(name="",value=f"You lost {amount} coins")
 
