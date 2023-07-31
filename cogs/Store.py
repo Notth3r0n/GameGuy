@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import json
+import asyncio
 
 elec_shop = [
     {"name": "Watch", "price": 600, "description": "Your own mobile device"},
