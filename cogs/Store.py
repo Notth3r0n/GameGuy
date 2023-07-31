@@ -44,7 +44,7 @@ class Store(commands.Cog):
         weapons_em = discord.Embed(title='Weapons Shop', colour=discord.Color.blurple())
         fish_em = discord.Embed(title='Fish Shop', description="Each tier reduces chances of trash caught", colour=discord.Color.blurple())
 
-        
+        #add iteme name and price into embed
         for item in elec_shop:
             name = item["name"]
             price = item["price"]
