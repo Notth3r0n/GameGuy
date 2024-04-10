@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
 import asyncio
-from webserver import keep_alive
 import os
 import json
 
@@ -81,7 +80,5 @@ async def remove(ctx, amount: int, member: discord.Member=None):
     fail_em = discord.Embed(title='Error', description='You do not have access to this command!')
     await ctx.send(embed=fail_em)
     
-#run website
-keep_alive()
 #run main
 asyncio.run(main())
